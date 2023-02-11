@@ -52,5 +52,5 @@ app.get("/logout", (req, res) => {
 
 //서버포트 연결
 app.listen(app.get("port"), () => {
-  console.log(app.get("port"), "번 포트에서 실행중입니다......");
+  console.log(app.get("port"), "번 포트에서 실행중...");
 });
