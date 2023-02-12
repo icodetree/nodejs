@@ -50,7 +50,7 @@ app.get("/logout", (req, res) => {
   res.end("Logout Ok");
 });
 
-//서버포트 연결
+//서버포트 연결시
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 실행중...");
 });
