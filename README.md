@@ -1,4 +1,4 @@
-# nodejs
-nodejs study
+# nodejs study
 
 ## Naver API setup
+- naver api setup test
