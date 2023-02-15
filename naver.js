@@ -12,8 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // 라우팅 설정
 app.get("/naver/news", (req, res) => {
-  const client_id = "OQqutYdCyKK9PKtE5tJn";
-  const client_secret = "";
+  const client_id = "";
+  const client_secret = "1Sem5TUl2b";
   const api_url =
     "https://openapi.naver.com/v1/search/news?query=" + encodeURI("코스피");
 
@@ -41,11 +41,11 @@ app.get("/naver/news", (req, res) => {
 
       for (let i = 0; i < newsItem.length; i++) {
         newsJson.title.push(
-          newsItem[i].title.replace(/(<([^>]+)>)|&quot;/ig, "")
+          newsItem[i].title.replace(/(<([^>]+)>)|&quot;/gi, "")
         );
         newsJson.link.push(newsItem[i].link);
         newsJson.description.push(
-          newsItem[i].description.replace(/(<([^>]+)>)|&quot;/ig, "")
+          newsItem[i].description.replace(/(<([^>]+)>)|&quot;/gi, "")
         );
         newsJson.pubDate.push(newsItem[i].pubDate);
       }
