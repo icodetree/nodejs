@@ -11,20 +11,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // 라우팅 설정
-app.get("/airkorea", async (req, res) => {
+app.get("/subway", async (req, res) => {
   const serviceKey = "qL1QL2Oxca%2FmAs6NHcJrp0B7eq%2F86cU9t%2BW4YORy3iDP0dZPoGd5BOQwyogmqyM6da6BN8yjJ4SynjB25ajIJQ%3D%3D";
-  const airUrl =
-    "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty";
+  const subwayUrl =
+    "http://apis.data.go.kr/1613000/SubwayInfoService/getKwrdFndSubwaySttnList?";
 
-  let params = encodeURI("serviceKey") + "=" + serviceKey;
-  params += "&" + encodeURI("numOfRows") + "=" + encodeURI("1");
-  params += "&" + encodeURI("pageNo") + "=" + encodeURI("1");
-  params += "&" + encodeURI("dataTerm") + "=" + encodeURI("DAILY");
-  params += "&" + encodeURI("ver") + "=" + encodeURI("1.3");
-  params += "&" + encodeURI("stationName") + "=" + encodeURI("마포구");
-  params += "&" + encodeURI("returnType") + "=" + encodeURI("json");
+  let paramsURI = encodeURI("serviceKey") + "=" + serviceKey;
+  paramsURI += "&" + encodeURI("subwayStationName") + "=" + encodeURI("서울역");
+  paramsURI += "&" + encodeURI("numOfRows") + "=" + encodeURI("10");
+  paramsURI += "&" + encodeURI("pageNo") + "=" + encodeURI("1");
+  paramsURI += "&" + encodeURI("_type") + "=" + encodeURI("json");
 
-  const url = airUrl + params;
+  const url = subwayUrl + paramsURI;
+
+  console.log(paramsURI);
 
   try {
     const result = await axios.get(url);
