@@ -10,7 +10,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 라우팅 설정
+// 라우팅
 app.get("/subway", async (req, res) => {
   const serviceKey = "qL1QL2Oxca%2FmAs6NHcJrp0B7eq%2F86cU9t%2BW4YORy3iDP0dZPoGd5BOQwyogmqyM6da6BN8yjJ4SynjB25ajIJQ%3D%3D";
   const subwayUrl =
