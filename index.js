@@ -1,10 +1,14 @@
+const path = require("path");
+const dotenv = require("dotenv");
+dotenv.config({ path: path.resolve(__dirname, ".env") });
+
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const app = express();
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT);
 app.use(express.static(__dirname + "/public"));
 app.use(morgan("dev"));
 app.use(cookieParser("secret@1234"));
@@ -32,8 +36,11 @@ app.get("/", (req, res) => {
     res.send(output);
   } else {
     const output = `
-      <h2>로그인하지 않은 사용자입니다.</h2><br>
-      <p>로그인 해주세요.</p><br>
+      <h2>로그인하지 않은 사용자입니다.</h2>
+      <p>로그인 해주세요.</p>
+      <ul>
+        <li><a href="/subway">지하철 노선도</li>
+      </ul>
     `;
     res.send(output);
   }

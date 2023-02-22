@@ -1,9 +1,13 @@
+const path = require("path");
+const dotenv = require("dotenv");
+dotenv.config({ path: path.resolve(__dirname, ".env") });
+
 const morgan = require("morgan");
 const request = require("request");
 const express = require("express");
 const app = express();
 
-app.set("port", process.env.PORT || 8080);
+app.set("port", process.env.PORT);
 
 // 공통미들웨어
 app.use(morgan("dev"));
@@ -12,8 +16,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // 라우팅 설정
 app.get("/naver/news", (req, res) => {
-  const client_id = "";
-  const client_secret = "1Sem5TUl2b";
+  const client_id = "OQqutYdCyKK9PKtE5tJn";
+  const client_secret = process.env.naverSecret;
   const api_url =
     "https://openapi.naver.com/v1/search/news?query=" + encodeURI("코스피");
 
