@@ -5,7 +5,9 @@ dotenv.config({ path: path.resolve(__dirname, ".env") });
 const morgan = require("morgan");
 const axios = require("axios");
 const express = require("express");
+const fs = require('fs');
 const app = express();
+
 
 app.set("port", process.env.PORT);
 
@@ -32,16 +34,27 @@ app.get("/subway/detail", async (req, res) => {
 
   try {
     const result = await axios.get(url);
-    const airItem = {
-      // "location" : result.data.
+    const subwayItems = result.data.response.body.items.item;
+    
+    // subwayItems 변수를 HTML 형식으로 변환합니다.
+    let html = '<html><head><title>Subway Data</title></head><body><table border="1"><tr><th>subwayRouteName</th><th>subwayStationId</th><th>subwayStationName</th></tr>';
+    for (let i = 0; i < subwayItems.length; i++) {
+      html += `<tr><td>${subwayItems[i].subwayRouteName}</td><td>${subwayItems[i].subwayStationId}</td><td>${subwayItems[i].subwayStationName}</td></tr>`;
     }
-    // res.json(result.data);
+    html += '</table></body></html>';
 
-    // const subwayItem = {
-    //   location: result.data,
-    // };
+    // HTML 데이터를 파일로 저장합니다.
+    fs.writeFile('subway.html', html, (error) => {
+      if (error) {
+        // 에러가 발생하면 메시지를 출력합니다.
+        console.error(error.message);
+      } else {
+        // 파일이 성공적으로 저장되면 메시지를 출력합니다.
+        console.log('subway.html 파일이 생성되었습니다.');
+      }
+    });
 
-    console.log(result.data);
+
   } catch (error) {
     console.log(error);
   }
