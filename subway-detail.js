@@ -2,10 +2,10 @@ const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
+const fs = require('fs');
 const morgan = require("morgan");
 const axios = require("axios");
 const express = require("express");
-const fs = require('fs');
 const app = express();
 
 
@@ -53,8 +53,6 @@ app.get("/subway/detail", async (req, res) => {
         console.log('subway.html 파일이 생성되었습니다.');
       }
     });
-
-
   } catch (error) {
     console.log(error);
   }
