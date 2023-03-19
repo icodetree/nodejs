@@ -2,7 +2,6 @@ const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
-const fs = require('fs');
 const morgan = require("morgan");
 const axios = require("axios");
 const express = require("express");
@@ -37,22 +36,15 @@ app.get("/subway/detail", async (req, res) => {
     const subwayItems = result.data.response.body.items.item;
     
     // subwayItems 변수를 HTML 형식으로 변환합니다.
-    let html = '<html><head><title>Subway Data</title></head><body><table border="1"><tr><th>subwayRouteName</th><th>subwayStationId</th><th>subwayStationName</th></tr>';
+    // 다음 redis 배우기
+    let html = '<html><head><title>Subway Data</title></head><body><table border="1" style="border-collapse: collapse;"><tr><th>subwayRouteName</th><th>subwayStationId</th><th>subwayStationName</th></tr>';
     for (let i = 0; i < subwayItems.length; i++) {
       html += `<tr><td>${subwayItems[i].subwayRouteName}</td><td>${subwayItems[i].subwayStationId}</td><td>${subwayItems[i].subwayStationName}</td></tr>`;
     }
     html += '</table></body></html>';
 
-    // HTML 데이터를 파일로 저장합니다.
-    fs.writeFile('subway.html', html, (error) => {
-      if (error) {
-        // 에러가 발생하면 메시지를 출력합니다.
-        console.error(error.message);
-      } else {
-        // 파일이 성공적으로 저장되면 메시지를 출력합니다.
-        console.log('subway.html 파일이 생성되었습니다.');
-      }
-    });
+    res.send(html)
+
   } catch (error) {
     console.log(error);
   }
