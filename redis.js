@@ -1,6 +1,20 @@
-const redis = require('redis');
-const client = redis.createClient(6379, '127.0.0.1');
 
-client.get('mykey', (err, value) => {
-  console.log(value);
-})
+const express = require('express');
+const router = express.Router();
+const redis = require('redis');
+const redisClient = redis.createClient({
+    host : "127.0.0.1",
+    port : 6379,
+    db : 0,
+    password:"1q2w3e4r!@"
+});
+/* GET home page. */
+router.get('/', function(req, res, next) {
+
+    redisClient.get("NAME" , (err , result) => {
+        console.log(result)
+    });
+    res.render('index', { title: 'Express' });
+});
+
+module.exports = router;
