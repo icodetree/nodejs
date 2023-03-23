@@ -8,6 +8,7 @@ const redisClient = redis.createClient({
     db : 0,
     password:"1q2w3e4r!@"
 });
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
