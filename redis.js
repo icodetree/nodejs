@@ -1,21 +1,19 @@
-
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const redis = require('redis');
+const redis = require("redis");
 const redisClient = redis.createClient({
-    host : "127.0.0.1",
-    port : 6379,
-    db : 0,
-    password:"1q2w3e4r!@"
+  host: "127.0.0.1",
+  port: 6379,
+  db: 0,
+  password: "1q2w3e4r!@",
 });
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-
-    redisClient.get("NAME" , (err , result) => {
-        console.log(result)
-    });
-    res.render('index', { title: 'Express' });
+router.get("/", function (req, res, next) {
+  redisClient.get("NAME", (err, result) => {
+    console.log(result);
+  });
+  res.render("index", { title: "Express" });
 });
 
 module.exports = router;
