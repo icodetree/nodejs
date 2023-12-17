@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // 라우팅 설정
 app.get("/naver/news", (req, res) => {
-  const client_id = "OQqutYdCyKK9PKtE5tJn";
+  const client_id = process.env.naverClientkey;
   const client_secret = process.env.naverSecret;
   const api_url =
     "https://openapi.naver.com/v1/search/news?query=" + encodeURI("코스피");
