@@ -1,4 +1,7 @@
 const morgan = require("morgan");
+const url = require("url");
+const uuidAPIkey = require("uuid-apikey");
+
 const express = require("express");
 const app = express();
 
@@ -9,6 +12,11 @@ app.set("port", process.env.PORT || 8080);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const key = {
+  apiKey: "XT0P98P-DGR492J-GR04P2J-M90XKN5",
+  uuid: "ee8164a2-6c30-448a-8600-4b0aa241d9d4",
+};
 
 // 테스트를 위한 게시글 데이터
 let boardList = [];
@@ -69,6 +77,32 @@ app.delete("/board:id", (req, res) => {
   boardList.splice(idx, 1);
 
   res.redirect("/board");
+});
+
+// 게시글 API
+app.get("/board/:apikey/:type", (req, res) => {
+  let { type, apikey } = req.params;
+  const queryData = url.parse(req.url, true).query;
+
+  if (uuidAPIkey.isAPIkey(apikey) && uuidAPIkey.check(apikey, key.uuid)) {
+    if (type === "search") {
+      const keyword = queryData.keyword;
+      const result = boardList.filter((e) => {
+        return e.title.includes(keyword);
+      });
+      res.send(result);
+    } else if (type === "user") {
+      const user_id = queryData.user_id;
+      const result = boardList.filter((e) => {
+        return e.user_id === user_id;
+      });
+      res.send(result);
+    } else {
+      res.send("Wrong URL");
+    }
+  } else {
+    res.send("wrong API key");
+  }
 });
 
 app.listen(app.get("port"), () => {
