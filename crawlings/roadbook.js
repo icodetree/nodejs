@@ -1,31 +1,33 @@
-const { default: axios } = require("axios");
+const axios = require("axios");
 const cheerio = require("cheerio");
 
-const getHtml = async () => {
+const url = "https://roadbook.co.kr/category/%EC%8B%A0%EA%B0%84%EC%86%8C%EA%B0%9C";
+
+const getHtml = async (url) => {
   try {
-    return await axios.get(
-      "https://roadbook.co.kr/category/%EC%8B%A0%EA%B0%84%EC%86%8C%EA%B0%9C"
-    );
+    const { data } = await axios.get(url);
+    return data;
   } catch (error) {
     console.log(error);
   }
 };
 
-// html
-getHtml()
-  .then((html) => {
-    let ulList = [];
-    const $ = cheerio.load(html.data);
-    const $bodyList = $("div#searchList ol").children("li");
+const extractDataFromHtml = (html) => {
+  const ulList = [];
+  const $ = cheerio.load(html);
+  const $bodyList = $("div#searchList ol").children("li");
 
-    $bodyList.each(function (i, elem) {
-      ulList[i] = {
-        bookList: $(this).find("a").text(),
-        url: $(this).find("a").attr("href"),
-      };
-    });
+  $bodyList.each((i, elem) => {
+    ulList[i] = {
+      bookList: $(elem).find("a").text(),
+      url: $(elem).find("a").attr("href"),
+    };
+  });
 
-    const data = ulList.filter((n) => n.bookList);
-    return data;
-  })
-  .then((res) => console.log(res));
+  return ulList.filter((n) => n.bookList);
+};
+
+getHtml(url)
+  .then(extractDataFromHtml)
+  .then(console.log)
+  .catch(console.error);
