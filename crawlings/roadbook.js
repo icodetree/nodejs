@@ -31,3 +31,6 @@ getHtml(url)
   .then(extractDataFromHtml)
   .then(console.log)
   .catch(console.error);
+
+
+  
