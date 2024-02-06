@@ -32,5 +32,4 @@ getHtml(url)
   .then(console.log)
   .catch(console.error);
 
-
-  
+// 우울한날.. 한국이겨라..!!
