@@ -57,7 +57,7 @@ const getJob = async (keyword) => {
   console.log(jobs);
   return jobs;
 };
-
+// 이메일 보내기
 const crawlingJob = async (keyword) => {
   const jobs = await getJob(keyword);
 
