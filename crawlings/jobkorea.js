@@ -3,6 +3,17 @@ const cheerio = require("cheerio");
 require("dotenv").config({ path: "./nodemailer/.env" });
 const nodemailer = require("nodemailer");
 
+const cron = require("node-cron")
+
+// Here, create the transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.APP_PASSWORD
+  }
+});
+
 const getHTML = async (keyword) => {
   try {
     const html = (
@@ -57,7 +68,8 @@ const getJob = async (keyword) => {
   console.log(jobs);
   return jobs;
 };
-// 이메일 보내기
+
+
 const crawlingJob = async (keyword) => {
   const jobs = await getJob(keyword);
 
@@ -65,27 +77,27 @@ const crawlingJob = async (keyword) => {
   h.push(`<table style="border:1px solid black;border-collapse:collapse;">`);
   h.push(`<thead>`);
   h.push(`<tr>`);
-  h.push(`<th>구인제목</th>`);
-  h.push(`<th>회사명</th>`);
-  h.push(`<th>경력</th>`);
-  h.push(`<th>학력</th>`);
-  h.push(`<th>정규직여부</th>`);
-  h.push(`<th>지역</th>`);
-  h.push(`<th>구인마감일</th>`);
-  h.push(`<th>비고</th>`);
+  h.push(`<th style="border:1px solid black">구인제목</th>`);
+  h.push(`<th style="border:1px solid black">회사명</th>`);
+  h.push(`<th style="border:1px solid black">경력</th>`);
+  h.push(`<th style="border:1px solid black">학력</th>`);
+  h.push(`<th style="border:1px solid black">정규직여부</th>`);
+  h.push(`<th style="border:1px solid black">지역</th>`);
+  h.push(`<th style="border:1px solid black">구인마감일</th>`);
+  h.push(`<th style="border:1px solid black">비고</th>`);
   h.push(`</th>`);
   h.push(`</thead>`);
   h.push(`<tbody>`);
   jobs.forEach((job) => {
     h.push(`<tr>`);
-    h.push(`<td>${job.jobTitle}</td>`);
-    h.push(`<td>${job.company}</td>`);
-    h.push(`<td>${job.experience}</td>`);
-    h.push(`<td>${job.education}</td>`);
-    h.push(`<td>${job.regularYN}</td>`);
-    h.push(`<td>${job.region}</td>`);
-    h.push(`<td>${job.dueDate}</td>`);
-    h.push(`<td>${job.etc}</td>`);
+    h.push(`<td style="border:1px solid black">${job.jobTitle}</td>`);
+    h.push(`<td style="border:1px solid black">${job.company}</td>`);
+    h.push(`<td style="border:1px solid black">${job.experience}</td>`);
+    h.push(`<td style="border:1px solid black">${job.education}</td>`);
+    h.push(`<td style="border:1px solid black">${job.regularYN}</td>`);
+    h.push(`<td style="border:1px solid black">${job.region}</td>`);
+    h.push(`<td style="border:1px solid black">${job.dueDate}</td>`);
+    h.push(`<td style="border:1px solid black">${job.etc}</td>`);
     h.push(`</td>`);
   });
   h.push(`</tbody>`);
@@ -94,11 +106,14 @@ const crawlingJob = async (keyword) => {
   const emailData = {
     from: "master8407@naver.com",
     to: "bhy8407@gmail.com",
-    subject: "Node.js 구인 회사 정보",
+    subject: "웹퍼블리셔 구인 회사 정보",
     html: h.join(""),
   };
 
-  await nodemailer.send(emailData);
+  await transporter.sendMail(emailData);
 };
 
-crawlingJob("웹퍼블리셔");
+// 매일 아침 7시에 크롤링이 진행되고, 수집된 결과를 이메일로 전송
+cron.schedule("0 7 * * *", async () => {
+  crawlingJob("웹퍼블리셔");
+})
