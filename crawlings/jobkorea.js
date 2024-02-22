@@ -114,7 +114,6 @@ const crawlingJob = async (keyword) => {
 };
 
 // 매일 아침 7시에 크롤링이 진행되고, 수집된 결과를 이메일로 전송
-// 자동으로 실행되도록 서버에 저장하려면?
-cron.schedule("0 7 * * *", async () => {
+cron.schedule("0 0 * * *", async () => {
   crawlingJob("웹퍼블리셔");
 })
