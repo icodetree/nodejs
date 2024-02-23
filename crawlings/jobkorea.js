@@ -114,6 +114,6 @@ const crawlingJob = async (keyword) => {
 };
 
 // 매일 아침 7시에 크롤링이 진행되고, 수집된 결과를 이메일로 전송
-cron.schedule("0 0 * * *", async () => {
+cron.schedule("0 * * * *", async () => {
   crawlingJob("웹퍼블리셔");
 })
